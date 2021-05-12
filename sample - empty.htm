@@ -6,6 +6,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- ************** DO NOT MODIFY HTML/CSS *************** -->
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +42,7 @@
   }
 </style>
 
-<!-- -------- BASIC HTML EXAMPLE TEMPLATE FOR DEMO --------- -->
+<!---------- BASIC HTML TEMPLATE FOR DEMO --------- -->
 
 <body>
   <div class="grid">
@@ -97,13 +99,23 @@
 
 
 
+    // ******************* MAKE ALL CHANGES BELOW *******************
+
+    // TODO:
+    // Fill out the MPS Server Config Information
+    // Edit API Calls by setting the:
+    // 	CORRECT URL
+    // 	CORRECT Method
+    // 	CORRECT Body (if applicable)
+
+
     //----------- MPS SERVER CONFIG INFORMATION -------------- 
     var config = {
-      username: "standalone", //login username
-      password: "G@ppm0ym", //login password
-      deviceGUID: "d92b3be1-b04f-49de-b806-54b203054e9d", //device GUID
-      mpsserverIP: "192.168.0.19",
-      auth_token: ""
+      username: "",
+      password: "",
+      deviceGUID: "",
+      mpsserverIP: "",
+      auth_token: "" //Skip, the auth_token will auto-populate
     };
 
 
@@ -112,19 +124,19 @@
 
     //----------- Authorization Token API --------------  
 
-    var login_url = "https://" + config.mpsserverIP + "/mps/login/api/v1/authorize"
+    var auth_url = "" //API URL For Authorize
 
     function getAuth() {
       console.log('Start fetching auth token.....');
 
-      fetch(login_url, {
+      fetch(auth_url, {
         "headers": {
           "content-type": "application/json"
         },
-        "method": "POST",
+        "method": "", //REST Method
         "body": JSON.stringify({
-          "username": config.username,
-          "password": config.password
+          "username": "", //MPS User
+          "password": ""  //MPS Pass
         })
       })
         .then(res => {
@@ -147,7 +159,7 @@
 
     //----------- HARDWARE INFORMATION API --------------  
 
-    var hw_url = "https://" + config.mpsserverIP + "/mps/api/v1/amt/hardwareInfo/" + config.deviceGUID;
+    var hw_url = "" //API URL for Hardware Information
 
     function getHW() {
       console.log('Start fetching hardwareInfo.....');
@@ -157,7 +169,7 @@
           "content-type": "application/json",
           "authorization": "Bearer " + config.auth_token
         },
-        "method": "GET"
+        "method": "" //REST Method
       })
         .then(res => {
           return res.json();
@@ -181,7 +193,7 @@
 
     //----------- POWER CAPABILITIES API --------------  
 
-    var capab_url = "https://" + config.mpsserverIP + "/mps/api/v1/amt/power/capabilities/" + config.deviceGUID;
+    var capab_url = "" //API URL for Power Capabilities
 
     function getFeatures() {
       console.log('Start fetching power capabilities.....');
@@ -191,7 +203,7 @@
           "content-type": "application/json",
           "authorization": "Bearer " + config.auth_token
         },
-        "method": "GET"
+        "method": "" //REST Method
       })
         .then(res => {
           return res.json();
@@ -220,18 +232,19 @@
 
     //----------- POWER ACTION API --------------  
 
-    var power_url = "https://" + config.mpsserverIP + "/mps/api/v1/amt/power/action/" + config.deviceGUID
+    var power_url = "" //API URL for performing Power Actions
+    var poweraction = getElementById("actioninput").value;
 
     function execReset() {
       console.log('Start fetching power action.....');
-      var poweraction = getElementById("actioninput").value;
 
       fetch(power_url, {
         "headers": {
           "content-type": "application/json",
           "authorization": "Bearer " + config.auth_token
         },
-        "method": "POST",
+        "method": "", //REST Method
+        //The body is already filled out for you
         "body": JSON.stringify({
           "action": poweraction,
           "useSOL": false
