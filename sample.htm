@@ -1,0 +1,212 @@
+<!-- /*********************************************************************
+* Copyright (c) Intel Corporation 2019-2021
+* SPDX-License-Identifier: Apache-2.0
+**********************************************************************/ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Intel AMT API Demo</title>
+</head>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: 50% 50%;
+		grid-auto-rows: 40vh 40vh;
+		margin: 5% 10%;
+	}
+	.item {
+		border: 1px solid black;
+		padding: 3%;
+	}
+	.actions {
+		padding: 0;
+		margin: 1%;
+	}
+	.row {
+	  display: flex;
+	}
+	.column {
+	  flex: 50%;
+	}
+</style>
+
+<!-- -------- BASIC HTML EXAMPLE TEMPLATE FOR DEMO --------- -->
+<body>
+	<div class="grid">
+		<div class="item">
+			<h3>Hardware Information</h3>
+			<div>
+				<button id="hwInfo">Test</button>
+			</div>
+			<br>
+			<h4>Find and update with correct hardware data</h4>
+			<p>CPU: <span id="cpu"></span></p>
+			<p>Manufacturer: <span id="man_cpu"></span></p>
+			<p>Model: <span id="model"></span></p>
+			<p>BIOS Manufacturer: <span id="man_bios"></span></p>
+			<p>BIOS Version: <span id="ver_bios"></span></p>
+		</div>
+		<div class="item">
+			<h3>Power Capabilities</h3>
+			<div>
+				<button id="capabilities">Test</button>
+			</div>
+			<h4>Find possible power actions</h4>
+			<div class="row">
+				<div class="column" id="power1"></div>
+				<div class="column" id="power2"></div>
+			</div>
+		</div>
+		<div class="item">
+			<h3>Reset Device</h3>
+			<div>
+				<button id="resetDevice">Test</button>
+			</div>
+			<p id="action_output"></p>
+		</div>
+		<div class="item"></div>
+	</div>
+
+	<script type="text/javascript">
+		//Link the button listeners
+		getElementById('hwInfo').addEventListener('click', getHW);
+		getElementById('capabilities').addEventListener('click', getFeatures);
+		getElementById('resetDevice').addEventListener('click', execReset);
+		// getElementById('hwInfo').addEventListener('click', start);
+
+
+
+
+
+		//----------- MPS SERVER CONFIG INFORMATION -------------- 
+		var config = {
+			username: "standalone", //login username
+			password: "G@ppm0ym", //login password
+			deviceGUID: "d92b3be1-b04f-49de-b806-54b203054e9d", //device UUID
+			mpsserverIP: "192.168.0.19",
+			auth_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI5RW1SSlRiSWlJYjRiSWVTc21nY1dJanJSNkh5RVRxYyIsImV4cCI6MTYyMDg2MTMzNH0.LSlx_v4MixZ_7XQGNd0dfU6Mps4l-pJ-bODVLhRpTGQ"
+		};
+
+
+
+
+
+		//----------- HARDWARE INFORMATION API --------------  
+
+		var hw_url = "https://" + config.mpsserverIP + "/mps/api/v1/amt/hardwareInfo/" + config.deviceGUID;
+
+		function getHW() {
+			console.log('Start fetching hardwareInfo.....');
+
+			fetch(hw_url, {
+				"headers": {
+					"content-type": "application/json",
+					"authorization": "Bearer " + config.auth_token
+				},
+				"method": "GET"
+			})
+				.then(res => {
+					return res.json();
+				})
+				.then(data => {
+					// console.log(data)
+					getElementById('cpu').innerHTML = data.CIM_Chip.responses[0].Version;
+					getElementById('man_cpu').innerHTML = data.CIM_Chip.responses[0].Manufacturer;
+					getElementById('model').innerHTML = data.CIM_Chassis.response.Model;
+					getElementById('man_bios').innerHTML = data.CIM_BIOSElement.response.Manufacturer;
+					getElementById('ver_bios').innerHTML = data.CIM_BIOSElement.response.Version;
+				})
+				.catch(error => {
+					console.log('Caught Exception', error);
+				})
+		}
+
+
+
+
+
+		//----------- POWER CAPABILITIES API --------------  
+
+		var capab_url = "https://" + config.mpsserverIP + "/mps/api/v1/amt/power/capabilities/" + config.deviceGUID;
+
+		function getFeatures() {
+			console.log('Start fetching power capabilities.....');
+
+			fetch(capab_url, {
+				"headers": {
+					"content-type": "application/json",
+					"authorization": "Bearer " + config.auth_token
+				},
+				"method": "GET"
+			})
+				.then(res => {
+					return res.json();
+				})
+				.then(data => {
+					// console.log(data)
+					var inc = 0;
+					for (var key of Object.keys(data)) {
+    				// console.log(key + " -> " + data[key])
+						var item = document.createElement('ul');
+						item.setAttribute('class', 'actions');
+						item.innerHTML = key + " -> " + data[key];
+						if(inc < 9){ getElementById("power1").appendChild(item); }
+						else{	getElementById("power2").appendChild(item); }
+   					inc++;
+					}
+				})
+				.catch(error => {
+					console.log('Caught Exception', error);
+				})
+		}
+
+
+
+
+
+		//----------- POWER ACTION API --------------  
+
+		var power_url = "https://" + config.mpsserverIP + "/mps/api/v1/amt/power/action/" + config.deviceGUID
+
+		function execReset() {
+			console.log('Start fetching power action.....');
+
+			fetch(power_url, {
+				"headers": {
+					"content-type": "application/json",
+					"authorization": "Bearer " + config.auth_token
+				},
+				"method": "POST",
+				"body": JSON.stringify({
+				  "action": 14,
+				  "useSOL": false
+				})
+			})
+				.then(res => {
+					return res.json();
+				})
+				.then(data => {
+					// console.log(data);
+					getElementById("action_output").innerHTML = data.Body.ReturnValue + ": " + data.Body.ReturnValueStr;
+				})
+				.catch(error => {
+					console.log('Caught Exception', error);
+				})
+		}		
+
+
+
+		function getElementById(id) {
+			return document.getElementById(id);
+		}
+
+	</script>
+</body>
+
+</html>
