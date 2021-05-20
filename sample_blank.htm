@@ -233,10 +233,10 @@
     //----------- POWER ACTION API --------------  
 
     var power_url = "" //API URL for performing Power Actions
-    var poweraction = getElementById("actioninput").value;
 
     function execReset() {
       console.log('Start fetching power action.....');
+      var poweraction = getElementById("actioninput").value;
 
       fetch(power_url, {
         "headers": {
