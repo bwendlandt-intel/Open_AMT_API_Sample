@@ -1,11 +1,23 @@
 # Resources for the Open AMT Cloud Toolkit Workshop
 
+This repository contains any extra resources needed to participate in the Open AMT Cloud Toolkit Workshop.
+
+Key Files Included:
+- RPC Binary/Executable
+    - These binaries are for testing purposes and other non-production uses. Instructions on compiling these binaries yourself can be found [here](https://open-amt-cloud-toolkit.github.io/docs/1.3/General/buildRPC/).
+- sample_blank.htm File for Demonstrating APIs
+
+In this workshop, we will demo APIs using the *sample_blank.htm* example template. For basic examples on constructing API calls using other tools or technologies, see below.
 
 ## Other REST API Call Examples
+
+<br>
 
 ### Node.js
 
 View our [REST API Call tutorial](https://open-amt-cloud-toolkit.github.io/docs/1.3/Tutorials/apiTutorial/). Includes a walkthrough and example code for how to get an Authorization Token and then make a call to get all devices of the MPS server.
+
+<br>
 
 ### cURL
 
@@ -20,6 +32,8 @@ Example Get Devices
 ```
 curl -k -H "Authorization: Bearer <Your-JWT-Token>" -X GET https://localhost/mps/api/v1/devices
 ```
+
+<br>
 
 ### Postman
 
@@ -39,22 +53,21 @@ The following steps will show how to construct the Authorize API call via Postma
 
 5. Provide the body according to Authorize API docs.
 
-```
-{
-    "username": "standalone",
-    "password": "G@ppm0ym"
-}
-```
+    ```
+    {
+        "username": "standalone",
+        "password": "G@ppm0ym"
+    }
+    ```
 
-6. Send.
+6. Click Send.
 
-Example Input
+    Example Input
 
-![input](./assets/postman_auth_input.PNG)
+    ![input](./assets/postman_auth_input.PNG)
 
-Example Output
+    Example Output
 
-![input](./assets/postman_auth_output.PNG)
+    ![input](./assets/postman_auth_output.PNG)
 
-
-If there is an authorization error, ensure SSL certificate verification is set to **OFF** in the Settings menu.
+    **Troubleshooting Note:** If there is an authorization error, ensure SSL certificate verification is set to **OFF** in the Settings menu.
