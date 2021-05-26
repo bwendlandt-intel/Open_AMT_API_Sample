@@ -9,9 +9,9 @@ Key Files Included:
 
 In this workshop, we will demo APIs using the *sample_blank.htm* example template. For basic examples on constructing API calls using other tools or technologies, see below.
 
-## Other REST API Call Examples
-
 <br>
+
+## Other REST API Call Examples
 
 ### Node.js
 
