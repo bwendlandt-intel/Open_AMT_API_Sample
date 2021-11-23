@@ -1,11 +1,12 @@
 # Resources for the Open AMT Cloud Toolkit Workshop
 
-This repository contains any extra resources needed to participate in the Open AMT Cloud Toolkit Workshop.
+This repository contains any extra resources needed to participate in the Open AMT Cloud Toolkit Workshop for Open AMT Cloud Toolkit v1.3.0.
 
 Key Files Included:
-- RPC Binary/Executable
+- RPC Binary/Executable (OUTDATED, v1.2.0)
     - These binaries are for testing purposes and other non-production uses. Instructions on compiling these binaries yourself can be found [here](https://open-amt-cloud-toolkit.github.io/docs/1.3/General/buildRPC/).
 - sample_blank.htm File for Demonstrating APIs
+- sample_filledin.html File which is equivalent to sample_blank.htm but with examples filled in
 
 In this workshop, we will demo APIs using the *sample_blank.htm* example template. For basic examples on constructing API calls using other tools or technologies, see below.
 
